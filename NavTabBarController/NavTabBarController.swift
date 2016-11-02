@@ -15,6 +15,8 @@ class NavTabBarController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = UIColor.lightGrayColor()
+        
         // Do any additional setup after loading the view.
         
         self.tabBar = NavTabBar.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 64))
