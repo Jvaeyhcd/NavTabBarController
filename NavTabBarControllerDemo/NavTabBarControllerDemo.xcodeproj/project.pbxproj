@@ -9,23 +9,21 @@
 /* Begin PBXBuildFile section */
 		0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF46581DC72175001E4627 /* AppDelegate.swift */; };
 		0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF465A1DC72175001E4627 /* ViewController.swift */; };
-		0CDF465E1DC72175001E4627 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF465C1DC72175001E4627 /* Main.storyboard */; };
 		0CDF46601DC72175001E4627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF465F1DC72175001E4627 /* Assets.xcassets */; };
-		0CDF46631DC72175001E4627 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF46611DC72175001E4627 /* LaunchScreen.storyboard */; };
-		0CDF466C1DC724B9001E4627 /* HcdNavTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF466B1DC724B9001E4627 /* HcdNavTabItem.swift */; };
-		0CDF466E1DC74B9B001E4627 /* HcdNavTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF466D1DC74B9B001E4627 /* HcdNavTabBar.swift */; };
+		0CEA15771DC9FED60028B23E /* NavTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15741DC9FED60028B23E /* NavTabBar.swift */; };
+		0CEA15781DC9FED60028B23E /* NavTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15751DC9FED60028B23E /* NavTabBarController.swift */; };
+		0CEA15791DC9FED60028B23E /* NavTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0CDF46551DC72175001E4627 /* NavTabBarControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NavTabBarControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CDF46581DC72175001E4627 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CDF465A1DC72175001E4627 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0CDF465D1DC72175001E4627 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0CDF465F1DC72175001E4627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0CDF46621DC72175001E4627 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0CDF46641DC72175001E4627 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0CDF466B1DC724B9001E4627 /* HcdNavTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HcdNavTabItem.swift; sourceTree = "<group>"; };
-		0CDF466D1DC74B9B001E4627 /* HcdNavTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HcdNavTabBar.swift; sourceTree = "<group>"; };
+		0CEA15741DC9FED60028B23E /* NavTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBar.swift; sourceTree = "<group>"; };
+		0CEA15751DC9FED60028B23E /* NavTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBarController.swift; sourceTree = "<group>"; };
+		0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBarItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +59,7 @@
 				0CDF466A1DC72192001E4627 /* NavTabBarController */,
 				0CDF46581DC72175001E4627 /* AppDelegate.swift */,
 				0CDF465A1DC72175001E4627 /* ViewController.swift */,
-				0CDF465C1DC72175001E4627 /* Main.storyboard */,
 				0CDF465F1DC72175001E4627 /* Assets.xcassets */,
-				0CDF46611DC72175001E4627 /* LaunchScreen.storyboard */,
 				0CDF46641DC72175001E4627 /* Info.plist */,
 			);
 			path = NavTabBarControllerDemo;
@@ -72,8 +68,9 @@
 		0CDF466A1DC72192001E4627 /* NavTabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				0CDF466B1DC724B9001E4627 /* HcdNavTabItem.swift */,
-				0CDF466D1DC74B9B001E4627 /* HcdNavTabBar.swift */,
+				0CEA15741DC9FED60028B23E /* NavTabBar.swift */,
+				0CEA15751DC9FED60028B23E /* NavTabBarController.swift */,
+				0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */,
 			);
 			name = NavTabBarController;
 			path = ../../NavTabBarController;
@@ -111,6 +108,7 @@
 				TargetAttributes = {
 					0CDF46541DC72175001E4627 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = NLP5PZS8U3;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -138,9 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CDF46631DC72175001E4627 /* LaunchScreen.storyboard in Resources */,
 				0CDF46601DC72175001E4627 /* Assets.xcassets in Resources */,
-				0CDF465E1DC72175001E4627 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,33 +147,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CDF466C1DC724B9001E4627 /* HcdNavTabItem.swift in Sources */,
-				0CDF466E1DC74B9B001E4627 /* HcdNavTabBar.swift in Sources */,
+				0CEA15791DC9FED60028B23E /* NavTabBarItem.swift in Sources */,
+				0CEA15771DC9FED60028B23E /* NavTabBar.swift in Sources */,
+				0CEA15781DC9FED60028B23E /* NavTabBarController.swift in Sources */,
 				0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */,
 				0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		0CDF465C1DC72175001E4627 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0CDF465D1DC72175001E4627 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0CDF46611DC72175001E4627 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0CDF46621DC72175001E4627 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0CDF46651DC72175001E4627 /* Debug */ = {
@@ -275,6 +253,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = NLP5PZS8U3;
 				INFOPLIST_FILE = NavTabBarControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cc.jvaeyhcd.NavTabBarControllerDemo;
@@ -287,6 +266,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = NLP5PZS8U3;
 				INFOPLIST_FILE = NavTabBarControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cc.jvaeyhcd.NavTabBarControllerDemo;
@@ -314,6 +294,7 @@
 				0CDF46691DC72175001E4627 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
