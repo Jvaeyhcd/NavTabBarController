@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CAA8AFA1DCAE76300EF534B /* ChargingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA8AF91DCAE76300EF534B /* ChargingViewController.swift */; };
+		0CAA8AFC1DCAE77400EF534B /* FindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA8AFB1DCAE77400EF534B /* FindViewController.swift */; };
+		0CAA8AFE1DCAE78400EF534B /* CarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA8AFD1DCAE78400EF534B /* CarViewController.swift */; };
+		0CAA8B001DCAE79300EF534B /* CircleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA8AFF1DCAE79300EF534B /* CircleViewController.swift */; };
+		0CAA8B021DCAE7EA00EF534B /* RentCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA8B011DCAE7EA00EF534B /* RentCarViewController.swift */; };
 		0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF46581DC72175001E4627 /* AppDelegate.swift */; };
 		0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF465A1DC72175001E4627 /* ViewController.swift */; };
 		0CDF46601DC72175001E4627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF465F1DC72175001E4627 /* Assets.xcassets */; };
@@ -16,6 +21,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CAA8AF91DCAE76300EF534B /* ChargingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChargingViewController.swift; sourceTree = "<group>"; };
+		0CAA8AFB1DCAE77400EF534B /* FindViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindViewController.swift; sourceTree = "<group>"; };
+		0CAA8AFD1DCAE78400EF534B /* CarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarViewController.swift; sourceTree = "<group>"; };
+		0CAA8AFF1DCAE79300EF534B /* CircleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleViewController.swift; sourceTree = "<group>"; };
+		0CAA8B011DCAE7EA00EF534B /* RentCarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RentCarViewController.swift; sourceTree = "<group>"; };
 		0CDF46551DC72175001E4627 /* NavTabBarControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NavTabBarControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CDF46581DC72175001E4627 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CDF465A1DC72175001E4627 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +69,11 @@
 				0CDF466A1DC72192001E4627 /* NavTabBarController */,
 				0CDF46581DC72175001E4627 /* AppDelegate.swift */,
 				0CDF465A1DC72175001E4627 /* ViewController.swift */,
+				0CAA8AF91DCAE76300EF534B /* ChargingViewController.swift */,
+				0CAA8AFB1DCAE77400EF534B /* FindViewController.swift */,
+				0CAA8AFD1DCAE78400EF534B /* CarViewController.swift */,
+				0CAA8AFF1DCAE79300EF534B /* CircleViewController.swift */,
+				0CAA8B011DCAE7EA00EF534B /* RentCarViewController.swift */,
 				0CDF465F1DC72175001E4627 /* Assets.xcassets */,
 				0CDF46641DC72175001E4627 /* Info.plist */,
 			);
@@ -149,9 +164,14 @@
 			files = (
 				0CEA15791DC9FED60028B23E /* NavTabBarItem.swift in Sources */,
 				0CEA15771DC9FED60028B23E /* NavTabBar.swift in Sources */,
+				0CAA8B001DCAE79300EF534B /* CircleViewController.swift in Sources */,
 				0CEA15781DC9FED60028B23E /* NavTabBarController.swift in Sources */,
+				0CAA8AFA1DCAE76300EF534B /* ChargingViewController.swift in Sources */,
 				0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */,
+				0CAA8AFC1DCAE77400EF534B /* FindViewController.swift in Sources */,
 				0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */,
+				0CAA8B021DCAE7EA00EF534B /* RentCarViewController.swift in Sources */,
+				0CAA8AFE1DCAE78400EF534B /* CarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

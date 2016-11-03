@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window!.backgroundColor = UIColor.lightGrayColor()
-        window!.rootViewController = NavTabBarController()
+        window!.rootViewController = ViewController()
         window!.makeKeyAndVisible()
         
         return true

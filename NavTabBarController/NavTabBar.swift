@@ -8,25 +8,46 @@
 
 import UIKit
 
+protocol HcdTabBarDelegate {
+    func tabBar(tabBar: NavTabBar, willSelectItemAtIndex: Int) -> Bool
+    func tabBar(tabBar: NavTabBar, didSelectedItemAtIndex: Int)
+    func leftButtonClicked()
+    func rightButtonClicked()
+}
+
+extension HcdTabBarDelegate {
+    
+    // 定义可选协议
+    func leftButtonClicked() {
+        
+    }
+    
+    func rightButtonClicked() {
+        
+    }
+}
+
 class NavTabBar: UIView, UIScrollViewDelegate {
 
+    var delegate: HcdTabBarDelegate?
+    
     var leftAndRightSpacing = CGFloat(0)
-    var itemWidth = CGFloat(80)
+    var itemWidth = CGFloat(70)
     var itemSelectedBgInsets = UIEdgeInsetsMake(40, 15, 0, 15)
     
     // 选中的Item的index
-    private var selectedItemIndex = 0
+    private var selectedItemIndex = -1
     private var scrollView: UIScrollView?
     private var items: [NavTabBarItem] = [NavTabBarItem]()
     private var itemSelectedBgImageView: UIImageView?
-    // item的选中字体大小，默认22
-    private var itemTitleSelectedFont = UIFont.systemFontOfSize(22)
+    // item的选中字体大小，默认20
+    private var itemTitleSelectedFont = UIFont.systemFontOfSize(20)
     // item的没有选中字体大小，默认16
     private var itemTitleFont = UIFont.systemFontOfSize(16)
     
-    // 拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果，默认为YES
+    // 拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果，默认为false
     private var itemColorChangeFollowContentScroll = true
-    // 拖动内容视图时，item的字体是否根据拖动位置显示渐变效果，默认为true
+    // 拖动内容视图时，item的字体是否根据拖动位置显示渐变效果，默认为false
     private var itemFontChangeFollowContentScroll = true
     // TabItem的选中背景是否随contentView滑动而移动
     private var itemSelectedBgScrollFollowContent = true
@@ -37,7 +58,13 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     // Item未选中的字体颜色
     private var itemTitleColor: UIColor = UIColor.lightGrayColor()
     // Item选中的字体颜色
-    private var itemTitleSelectedColor: UIColor = UIColor.redColor()
+    private var itemTitleSelectedColor: UIColor = UIColor.init(red: 0.000, green: 0.655, blue: 0.937, alpha: 1.00)//[UIColor colorWithRed:0.000 green:0.655 blue:0.937 alpha:1.00]
+    
+    // 左右两边的图片按钮
+    private var leftButton, rightButton: UIButton?
+    // 左右按钮是否显示
+    private var showLeftButton = false, showRightButton = false
+    private var buttonWidth = CGFloat(50)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,6 +112,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
         
         // didSelectedItemAtIndex
+        if nil != self.delegate {
+            self.delegate?.tabBar(self, didSelectedItemAtIndex: selectedItemIndex)
+        }
         
         self.selectedItemIndex = selectedItemIndex
         setSelectedItemCenter()
@@ -108,9 +138,22 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         setSelectedItemIndex(item.index)
     }
     
+    @objc private func leftButtonClicked(button: UIButton) {
+        if nil != self.delegate {
+            self.delegate?.leftButtonClicked()
+        }
+    }
+    
+    @objc private func rightButtonClicked(button: UIButton) {
+        if nil != self.delegate {
+            self.delegate?.rightButtonClicked()
+        }
+    }
+    
     // MARK: - public fucntion
     
     func showSelectedBgView(show: Bool) {
+        self.itemSelectedBgScrollFollowContent = show
         self.itemSelectedBgImageView?.hidden = !show
     }
     
@@ -125,6 +168,34 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         setItems(items)
     }
     
+    func showLeftBarButton(withImage image: UIImage) {
+        self.showLeftButton = true
+        if nil == self.leftButton {
+            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+            self.leftButton = UIButton.init(frame: CGRectMake(0, statusBarHeight, buttonWidth, self.bounds.height - statusBarHeight))
+            self.leftButton?.backgroundColor = UIColor.clearColor()
+            self.leftButton?.addTarget(self, action: #selector(leftButtonClicked(_:)), forControlEvents: .TouchUpInside)
+            self.addSubview(self.leftButton!)
+        }
+        
+        self.leftButton?.setImage(image, forState: .Normal)
+        self.updateScrollViewFrame()
+    }
+    
+    func showRightBarButton(withImage image: UIImage) {
+        self.showRightButton = true
+        if nil == self.rightButton {
+            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+            self.rightButton = UIButton.init(frame: CGRectMake(self.bounds.width - buttonWidth, statusBarHeight, buttonWidth, self.bounds.height - statusBarHeight))
+            self.rightButton?.backgroundColor = UIColor.clearColor()
+            self.rightButton?.addTarget(self, action: #selector(rightButtonClicked(_:)), forControlEvents: .TouchUpInside)
+            self.addSubview(self.rightButton!)
+        }
+        
+        self.rightButton?.setImage(image, forState: .Normal)
+        self.updateScrollViewFrame()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -137,7 +208,6 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
             
             self.scrollView = UIScrollView.init(frame: CGRectMake(0, statusBarHeight, self.bounds.width, self.bounds.height - statusBarHeight))
-            self.scrollView?.delegate = self
             self.scrollView?.showsVerticalScrollIndicator = false
             self.scrollView?.showsHorizontalScrollIndicator = false
             
@@ -146,7 +216,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
         if nil == self.itemSelectedBgImageView {
             self.itemSelectedBgImageView = UIImageView.init(frame: .zero)
-            self.itemSelectedBgImageView?.backgroundColor = UIColor.redColor()
+            self.itemSelectedBgImageView?.backgroundColor = UIColor.init(red: 0.000, green: 0.655, blue: 0.937, alpha: 1.00)
         }
     }
     
@@ -190,6 +260,25 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
     }
     
+    private func updateScrollViewFrame() {
+        var x = CGFloat(0)
+        var width = self.bounds.width
+        
+        if self.showLeftButton {
+            x = self.buttonWidth
+            width = width - self.buttonWidth
+        }
+        
+        if self.showRightButton {
+            width = width - self.buttonWidth
+        }
+        
+        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+        self.scrollView?.frame = CGRectMake(x, statusBarHeight, width, self.bounds.height - statusBarHeight)
+        
+        self.updateItemsFrame()
+    }
+    
     // 更新选中的Item的背景
     private func updateSelectedBgFrameWithIndex(index: Int) {
         if index < 0 || index > self.items.count {
@@ -220,13 +309,25 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
     }
     
-    private func selectedItem() -> NavTabBarItem {
-        return self.items[self.selectedItemIndex]
+    private func selectedItem() -> NavTabBarItem? {
+        
+        if self.selectedItemIndex >= 0 && self.selectedItemIndex < self.items.count {
+            return self.items[self.selectedItemIndex]
+        }
+        
+        return nil
     }
     
     private func setSelectedItemCenter() {
+        
+        let selectedItem = self.selectedItem()
+        
+        if nil == selectedItem {
+            return
+        }
+        
         // 修改偏移量
-        var offsetX = self.selectedItem().center.x - self.scrollView!.frame.size.width * 0.5
+        var offsetX = selectedItem!.center.x - self.scrollView!.frame.size.width * 0.5
         
         // 处理最小滚动偏移量
         if offsetX < 0 {
@@ -257,11 +358,25 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     //MARK: - UIScrollViewDelegate
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
+        // 这里的Delegate是给NavTabController调用的
+        if scrollView.isEqual(self.scrollView) {
+            return
+        }
+        
+        let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.size.width)
+        setSelectedItemIndex(page)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        // 这里的Delegate是给NavTabController调用的
+        if scrollView.isEqual(self.scrollView) {
+            return
+        }
+        
         // 如果不是手势拖动导致的此方法被调用，不处理
         if !(scrollView.dragging || scrollView.decelerating) {
             return
@@ -280,7 +395,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         let leftIndex = Int(offsetX) / Int(scrollViewWidth)
         let rightIndex = leftIndex + 1
         
-        if leftIndex > self.items.count || rightIndex > self.items.count {
+        if leftIndex >= self.items.count || rightIndex >= self.items.count {
             return
         }
         let leftItem = self.items[leftIndex]
