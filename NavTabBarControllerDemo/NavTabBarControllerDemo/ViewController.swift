@@ -15,8 +15,8 @@ class ViewController: NavTabBarController {
         // Do any additional setup after loading the view, typically from a nib.
         
         
-        self.tabBar?.showLeftBarButton(withImage: UIImage(named: "nav_menu_btn")!)
-        self.tabBar?.showRightBarButton(withImage: UIImage(named: "nav_menu_list")!)
+//        self.tabBar?.showLeftBarButton(withImage: UIImage(named: "nav_menu_btn")!)
+//        self.tabBar?.showRightBarButton(withImage: UIImage(named: "nav_menu_list")!)
         
         let vc1 = ChargingViewController()
         vc1.title = "充电"
