@@ -74,7 +74,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     // MARK: - Setter
-    
+    /**
+     设置选中Item下标
+     
+     - parameter selectedItemIndex: 选中Item的index
+     */
     func setSelectedItemIndex(selectedItemIndex: Int) {
         if self.items.count == 0 || selectedItemIndex < 0 || selectedItemIndex >= self.items.count {
             return
@@ -120,6 +124,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         setSelectedItemCenter()
     }
     
+    /**
+     设置Items
+     
+     - parameter items: Items数组
+     */
     func setItems(items: [NavTabBarItem]) {
         self.items.forEach{ $0.removeFromSuperview() }
         
@@ -131,6 +140,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     
     }
     
+    /**
+     Item点击事件
+     
+     - parameter item: 被点击的Item
+     */
     @objc private func tabItemClicked(item: NavTabBarItem) {
         if self.selectedItemIndex == item.index {
             return
@@ -138,12 +152,22 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         setSelectedItemIndex(item.index)
     }
     
+    /**
+     左边按钮点击事件
+     
+     - parameter button: 点击的Button
+     */
     @objc private func leftButtonClicked(button: UIButton) {
         if nil != self.delegate {
             self.delegate?.leftButtonClicked()
         }
     }
     
+    /**
+     右边按钮点击事件
+     
+     - parameter button: 点击的Button
+     */
     @objc private func rightButtonClicked(button: UIButton) {
         if nil != self.delegate {
             self.delegate?.rightButtonClicked()
@@ -152,11 +176,21 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     
     // MARK: - public fucntion
     
+    /**
+     设置是否显示选中Item的背景图片
+     
+     - parameter show: ture or false
+     */
     func showSelectedBgView(show: Bool) {
         self.itemSelectedBgScrollFollowContent = show
         self.itemSelectedBgImageView?.hidden = !show
     }
     
+    /**
+     设置Items的titles
+     
+     - parameter titles: title数组
+     */
     func setTitles(titles: [String]) {
         var items = [NavTabBarItem]()
         for title in titles {
@@ -168,6 +202,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         setItems(items)
     }
     
+    /**
+     显示左边按钮
+     
+     - parameter image: 按钮图片
+     */
     func showLeftBarButton(withImage image: UIImage) {
         self.showLeftButton = true
         if nil == self.leftButton {
@@ -182,6 +221,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.updateScrollViewFrame()
     }
     
+    /**
+     显示右边按钮
+     
+     - parameter image: 按钮图片
+     */
     func showRightBarButton(withImage image: UIImage) {
         self.showRightButton = true
         if nil == self.rightButton {
@@ -201,6 +245,12 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     // MARK: - private function
+    
+    /**
+     初始化一些界面组件
+     
+     - returns: 
+     */
     private func initSubViews() {
         
         if nil == self.scrollView {
@@ -224,7 +274,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
     }
     
-    //更新items的Frame
+    /**
+     更新items的Frame
+     */
     private func updateItemsFrame() {
         if self.items.count == 0 {
             return
@@ -260,6 +312,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
     }
     
+    /**
+     更新ScrollView的Frame
+     */
     private func updateScrollViewFrame() {
         var x = CGFloat(0)
         var width = self.bounds.width
@@ -279,7 +334,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.updateItemsFrame()
     }
     
-    // 更新选中的Item的背景
+    /**
+     更新选中的Item的背景
+     
+     - parameter index: 选中的Item的index
+     */
     private func updateSelectedBgFrameWithIndex(index: Int) {
         if index < 0 || index > self.items.count {
             return
@@ -293,7 +352,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
                                                         height)
     }
     
-    // 更新item的大小缩放
+    /**
+     更新item的大小缩放
+     */
     private func updateItemsScaleIfNeeded() {
         if self.itemFontChangeFollowContentScroll {
             self.items.forEach{
@@ -309,6 +370,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
     }
     
+    /**
+     获取选中的Item
+     
+     - returns: 选中的Item
+     */
     private func selectedItem() -> NavTabBarItem? {
         
         if self.selectedItemIndex >= 0 && self.selectedItemIndex < self.items.count {
@@ -318,6 +384,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         return nil
     }
     
+    /**
+     将选中的Item更新到中间位置
+     */
     private func setSelectedItemCenter() {
         
         let selectedItem = self.selectedItem()

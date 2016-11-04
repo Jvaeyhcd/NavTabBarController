@@ -158,6 +158,11 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
         }
     }
     
+    /**
+     设置ViewControllers
+     
+     - parameter viewControllers: ViewController数组
+     */
     func setViewControllers(viewControllers: [UIViewController]) {
         
         if viewControllers.count == 0 {
@@ -195,12 +200,24 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
         updateContentViewsFrame()
     }
     
+    // MARK: public function
+    
+    /**
+     设置ViewController的Content Frame
+     
+     - parameter contentViewFrame: viewController的ScrollView的Frame
+     */
     func setContentViewFrame(contentViewFrame: CGRect) {
         self.contentViewFrame = contentViewFrame
         updateContentViewsFrame()
     }
     
-    // MARK: public function
+    /**
+     设置TabBar的Frame和ContentView的Frame
+     
+     - parameter tabBarFrame:      tabBar的Frame
+     - parameter contentViewFrame: ContentView的Frame
+     */
     func setTabBarFrame(tabBarFrame: CGRect, contentViewFrame: CGRect) {
         
         self.tabBar?.frame = tabBarFrame

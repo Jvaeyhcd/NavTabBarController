@@ -18,22 +18,25 @@ class ViewController: NavTabBarController {
 //        self.tabBar?.showLeftBarButton(withImage: UIImage(named: "nav_menu_btn")!)
 //        self.tabBar?.showRightBarButton(withImage: UIImage(named: "nav_menu_list")!)
         
-        let vc1 = ChargingViewController()
-        vc1.title = "充电"
+        let vc1 = UIViewController()
+        vc1.title = "精选"
         
-        let vc2 = FindViewController()
-        vc2.title = "发现"
+        let vc2 = UIViewController()
+        vc2.title = "话题"
         
-        let vc3 = CarViewController()
-        vc3.title = "选车"
+        let vc3 = UIViewController()
+        vc3.title = "圈子"
         
-        let vc4 = CircleViewController()
-        vc4.title = "圈子"
+        let vc4 = UIViewController()
+        vc4.title = "体育"
         
-        let vc5 = RentCarViewController()
-        vc5.title = "租车"
+        let vc5 = UIViewController()
+        vc5.title = "娱乐"
         
-        setViewControllers([vc1, vc2, vc3, vc4, vc5])
+        let vc6 = UIViewController()
+        vc6.title = "军事"
+        
+        setViewControllers([vc1, vc2, vc3, vc4, vc5, vc6])
     }
     
     override func didReceiveMemoryWarning() {
