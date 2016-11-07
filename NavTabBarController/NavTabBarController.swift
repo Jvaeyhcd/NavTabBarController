@@ -21,6 +21,8 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.view.clipsToBounds = true
         self.view.backgroundColor = UIColor.lightGrayColor()
         
         // Do any additional setup after loading the view.
@@ -52,6 +54,9 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
             self.scrollView = UIScrollView.init(frame: CGRectMake(0, 0, 0, 0))
             self.scrollView?.pagingEnabled = true
             self.scrollView!.showsHorizontalScrollIndicator = false
+            self.scrollView!.alwaysBounceVertical = true
+            self.scrollView!.alwaysBounceHorizontal = true
+            self.scrollView!.bounces = false
             self.scrollView!.showsVerticalScrollIndicator = false
             self.scrollView!.scrollsToTop = false
             self.scrollView!.delegate = self.tabBar
@@ -220,7 +225,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
      */
     func setTabBarFrame(tabBarFrame: CGRect, contentViewFrame: CGRect) {
         
-        self.tabBar?.frame = tabBarFrame
+        self.tabBar?.updateFrame(tabBarFrame)
         setContentViewFrame(contentViewFrame)
     }
     

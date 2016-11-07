@@ -65,6 +65,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     // 左右按钮是否显示
     private var showLeftButton = false, showRightButton = false
     private var buttonWidth = CGFloat(50)
+    private var paddingTop = CGFloat(0), paddingLeft = CGFloat(0), paddingBottom = CGFloat(0), paddingRight = CGFloat(0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,6 +75,61 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     // MARK: - Setter
+    
+    /**
+     设置切换是否动态改变Item字体颜色
+     
+     - parameter itemColorChangeFollowContentScroll: Bool true or false
+     */
+    func setItemColorChangeFollowContentScroll(itemColorChangeFollowContentScroll: Bool) {
+        self.itemColorChangeFollowContentScroll = itemColorChangeFollowContentScroll
+    }
+    
+    /**
+     设置切换是否动态改变Item字体大小
+     
+     - parameter itemFontChangeFollowContentScroll: Bool true or false
+     */
+    func setItemFontChangeFollowContentScroll(itemFontChangeFollowContentScroll: Bool) {
+        self.itemFontChangeFollowContentScroll = itemFontChangeFollowContentScroll
+    }
+    
+    func setItemTitleFont(itemTitleFont: UIFont) {
+        self.itemTitleFont = itemTitleFont
+        updateItemsFrame()
+        setSelectedItemIndex(self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setItemTitleSelectedFont(itemTitleSelectedFont: UIFont) {
+        self.itemTitleSelectedFont = itemTitleSelectedFont
+        updateItemsFrame()
+        setSelectedItemIndex(self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setItemTitleColor(itemTitleColor: UIColor) {
+        self.itemTitleColor = itemTitleColor
+        updateItemsFrame()
+        setSelectedItemIndex(self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setItemTitleSelectedColor(itemTitleSelectedColor: UIColor) {
+        self.itemTitleSelectedColor = itemTitleSelectedColor
+        updateItemsFrame()
+        setSelectedItemIndex(self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setFramePadding(top top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
+        self.paddingTop = top
+        self.paddingLeft = left
+        self.paddingBottom = bottom
+        self.paddingRight = right
+        updateScrollViewFrame()
+    }
+    
     /**
      设置选中Item下标
      
@@ -175,6 +231,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     // MARK: - public fucntion
+    
+    func updateFrame(frame: CGRect) {
+        self.frame = frame
+        updateScrollViewFrame()
+    }
     
     /**
      设置是否显示选中Item的背景图片
@@ -300,6 +361,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
                 item.frame = CGRectMake(x, 0, width, self.scrollView!.bounds.height)
                 item.setTitleColor(self.itemTitleColor)
                 item.setTitleSelectedColor(self.itemTitleSelectedColor)
+                item.setTitleFont(self.itemTitleFont)
                 item.addTarget(self, action: #selector(tabItemClicked(_:)), forControlEvents: .TouchUpInside)
                 item.index = index
                 
@@ -316,8 +378,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
      更新ScrollView的Frame
      */
     private func updateScrollViewFrame() {
-        var x = CGFloat(0)
-        var width = self.bounds.width
+        var x = self.paddingLeft
+        let y = self.paddingTop
+        
+        var width = self.frame.size.width - self.paddingLeft - self.paddingRight
+        let height = self.frame.size.height - self.paddingTop - self.paddingBottom
         
         if self.showLeftButton {
             x = self.buttonWidth
@@ -328,8 +393,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             width = width - self.buttonWidth
         }
         
-        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
-        self.scrollView?.frame = CGRectMake(x, statusBarHeight, width, self.bounds.height - statusBarHeight)
+        self.scrollView?.frame = CGRectMake(x, y, width, height)
         
         self.updateItemsFrame()
     }
