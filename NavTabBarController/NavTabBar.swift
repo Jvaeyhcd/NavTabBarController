@@ -28,13 +28,14 @@ extension HcdTabBarDelegate {
 }
 
 class NavTabBar: UIView, UIScrollViewDelegate {
-
+    
     var delegate: HcdTabBarDelegate?
     
     var leftAndRightSpacing = CGFloat(0)
-    var itemWidth = CGFloat(70)
     var itemSelectedBgInsets = UIEdgeInsetsMake(40, 15, 0, 15)
     
+    // Item的宽度，默认值70
+    private var itemWidth = CGFloat(70)
     // 选中的Item的index
     private var selectedItemIndex = -1
     private var scrollView: UIScrollView?
@@ -122,6 +123,13 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         updateItemsScaleIfNeeded()
     }
     
+    func setItemWidth(itemWidth: CGFloat) {
+        self.itemWidth = itemWidth
+        updateItemsFrame()
+        setSelectedItemIndex(self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
     func setFramePadding(top top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
         self.paddingTop = top
         self.paddingLeft = left
@@ -164,7 +172,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
         
         if self.itemSelectedBgSwitchAnimated && self.selectedItemIndex >= 0 {
-            UIView.animateWithDuration(0.25, animations: { 
+            UIView.animateWithDuration(0.25, animations: {
                 self.updateSelectedBgFrameWithIndex(selectedItemIndex)
             })
         } else {
@@ -193,7 +201,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         updateItemsFrame()
         setSelectedItemIndex(self.selectedItemIndex)
         updateItemsScaleIfNeeded()
-    
+        
     }
     
     /**
@@ -310,7 +318,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     /**
      初始化一些界面组件
      
-     - returns: 
+     - returns:
      */
     private func initSubViews() {
         
@@ -411,9 +419,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         let width = item.frame.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right
         let height = item.frame.size.height - self.itemSelectedBgInsets.top - self.itemSelectedBgInsets.bottom
         self.itemSelectedBgImageView!.frame = CGRectMake(item.frame.origin.x + self.itemSelectedBgInsets.left,
-                                                        item.frame.origin.y + self.itemSelectedBgInsets.top,
-                                                        width,
-                                                        height)
+                                                         item.frame.origin.y + self.itemSelectedBgInsets.top,
+                                                         width,
+                                                         height)
     }
     
     /**
@@ -476,13 +484,13 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     }
     
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
     func MAX(value1: CGFloat, value2: CGFloat) -> CGFloat {
         if value1 > value2 {
             return value1

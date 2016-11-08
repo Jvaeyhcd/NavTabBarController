@@ -36,6 +36,10 @@ class ViewController: NavTabBarController {
         let vc6 = UIViewController()
         vc6.title = "军事"
         
+        setTabBarFrame(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 64), contentViewFrame: CGRectMake(0, 64, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height - 64))
+        self.tabBar?.setItemWidth(UIScreen.mainScreen().bounds.width / 5)
+        self.tabBar?.setFramePadding(top: 20, left: 0, bottom: 0, right: 0)
+        
         setViewControllers([vc1, vc2, vc3, vc4, vc5, vc6])
     }
     

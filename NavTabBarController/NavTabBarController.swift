@@ -9,7 +9,7 @@
 import UIKit
 
 class NavTabBarController: UIViewController, HcdTabBarDelegate{
-
+    
     var tabBar: NavTabBar?
     private var selectedControllerIndex = -1
     private var viewControllers = [UIViewController]()
@@ -20,7 +20,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.clipsToBounds = true
         self.view.backgroundColor = UIColor.lightGrayColor()
@@ -30,7 +30,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
         initSubView()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -236,7 +236,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate{
         }
         self.setSelectedControllerIndex(didSelectedItemAtIndex)
     }
-
+    
     func tabBar(tabBar: NavTabBar, willSelectItemAtIndex: Int) -> Bool {
         return true
     }
