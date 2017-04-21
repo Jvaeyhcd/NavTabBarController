@@ -32,7 +32,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     var delegate: HcdTabBarDelegate?
     
     var leftAndRightSpacing = CGFloat(0)
-    var itemSelectedBgInsets = UIEdgeInsetsMake(40, 15, 0, 15)
+    private var itemSelectedBgInsets = UIEdgeInsetsMake(40, 15, 0, 15)
     
     // Item的宽度，默认值70
     private var itemWidth = CGFloat(70)
@@ -42,9 +42,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     private var items: [NavTabBarItem] = [NavTabBarItem]()
     private var itemSelectedBgImageView: UIImageView?
     // item的选中字体大小，默认20
-    private var itemTitleSelectedFont = UIFont.systemFontOfSize(20)
+    private var itemTitleSelectedFont = UIFont.systemFont(ofSize: 20)
     // item的没有选中字体大小，默认16
-    private var itemTitleFont = UIFont.systemFontOfSize(16)
+    private var itemTitleFont = UIFont.systemFont(ofSize: 16)
     
     // 拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果，默认为false
     private var itemColorChangeFollowContentScroll = true
@@ -57,7 +57,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     private var itemSelectedBgSwitchAnimated = true
     
     // Item未选中的字体颜色
-    private var itemTitleColor: UIColor = UIColor.lightGrayColor()
+    private var itemTitleColor: UIColor = UIColor.lightGray
     // Item选中的字体颜色
     private var itemTitleSelectedColor: UIColor = UIColor.init(red: 0.000, green: 0.655, blue: 0.937, alpha: 1.00)//[UIColor colorWithRed:0.000 green:0.655 blue:0.937 alpha:1.00]
     
@@ -98,39 +98,46 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     func setItemTitleFont(itemTitleFont: UIFont) {
         self.itemTitleFont = itemTitleFont
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
     }
     
     func setItemTitleSelectedFont(itemTitleSelectedFont: UIFont) {
         self.itemTitleSelectedFont = itemTitleSelectedFont
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
     }
     
     func setItemTitleColor(itemTitleColor: UIColor) {
         self.itemTitleColor = itemTitleColor
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
     }
     
     func setItemTitleSelectedColor(itemTitleSelectedColor: UIColor) {
         self.itemTitleSelectedColor = itemTitleSelectedColor
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
     }
     
     func setItemWidth(itemWidth: CGFloat) {
         self.itemWidth = itemWidth
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
     }
     
-    func setFramePadding(top top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
+    func setItemSelectedBgInsets(itemSelectedBgInsets: UIEdgeInsets) {
+        self.itemSelectedBgInsets = itemSelectedBgInsets
+        updateItemsFrame()
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setFramePadding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
         self.paddingTop = top
         self.paddingLeft = left
         self.paddingBottom = bottom
@@ -150,38 +157,39 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
         if self.selectedItemIndex >= 0 {
             let oldSelectedItem = self.items[self.selectedItemIndex]
-            oldSelectedItem.selected = false
+            oldSelectedItem.isSelected = false
             if self.itemFontChangeFollowContentScroll {
                 // 如果支持字体平滑渐变切换，则设置item的scale
                 let itemTitleUnselectedFontScale = self.itemTitleFont.pointSize / self.itemTitleSelectedFont.pointSize
-                oldSelectedItem.transform = CGAffineTransformMakeScale(itemTitleUnselectedFontScale, itemTitleUnselectedFontScale)
+                oldSelectedItem.transform = CGAffineTransform(scaleX: itemTitleUnselectedFontScale, y: itemTitleUnselectedFontScale)
             } else {
                 // 如果支持字体平滑渐变切换，则直接设置字体
-                oldSelectedItem.setTitleFont(self.itemTitleFont)
+                oldSelectedItem.setTitleFont(titleFont: self.itemTitleFont)
             }
         }
         
         let newSelectedItem = self.items[selectedItemIndex]
-        newSelectedItem.selected = true
+        newSelectedItem.isSelected = true
         if self.itemFontChangeFollowContentScroll {
             // 如果支持字体平滑渐变切换，则设置item的scale
-            newSelectedItem.transform = CGAffineTransformMakeScale(1, 1)
+            newSelectedItem.transform = CGAffineTransform(scaleX: 1, y: 1)
         } else {
             // 如果支持字体平滑渐变切换，则直接设置字体
-            newSelectedItem.setTitleFont(self.itemTitleSelectedFont)
+            newSelectedItem.setTitleFont(titleFont: self.itemTitleSelectedFont)
         }
         
         if self.itemSelectedBgSwitchAnimated && self.selectedItemIndex >= 0 {
-            UIView.animateWithDuration(0.25, animations: {
-                self.updateSelectedBgFrameWithIndex(selectedItemIndex)
+            UIView.animate(withDuration: 0.25, animations: {
+                self.updateSelectedBgFrameWithIndex(index: selectedItemIndex)
             })
         } else {
-            self.updateSelectedBgFrameWithIndex(selectedItemIndex)
+            self.updateSelectedBgFrameWithIndex(index: selectedItemIndex)
         }
         
         // didSelectedItemAtIndex
         if nil != self.delegate {
-            self.delegate?.tabBar(self, didSelectedItemAtIndex: selectedItemIndex)
+            self.delegate?.tabBar(tabBar: self, willSelectItemAtIndex: selectedItemIndex)
+            self.delegate?.tabBar(tabBar: self, didSelectedItemAtIndex: selectedItemIndex)
         }
         
         self.selectedItemIndex = selectedItemIndex
@@ -199,7 +207,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.items = items
         
         updateItemsFrame()
-        setSelectedItemIndex(self.selectedItemIndex)
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
         
     }
@@ -213,7 +221,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         if self.selectedItemIndex == item.index {
             return
         }
-        setSelectedItemIndex(item.index)
+        setSelectedItemIndex(selectedItemIndex: item.index)
     }
     
     /**
@@ -252,7 +260,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
      */
     func showSelectedBgView(show: Bool) {
         self.itemSelectedBgScrollFollowContent = show
-        self.itemSelectedBgImageView?.hidden = !show
+        self.itemSelectedBgImageView?.isHidden = !show
     }
     
     /**
@@ -264,11 +272,11 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         var items = [NavTabBarItem]()
         for title in titles {
             let item = NavTabBarItem()
-            item.setTitle(title, forState: .Normal)
+            item.setTitle(title, for: .normal)
             items.append(item)
         }
         
-        setItems(items)
+        setItems(items: items)
     }
     
     /**
@@ -279,14 +287,15 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     func showLeftBarButton(withImage image: UIImage) {
         self.showLeftButton = true
         if nil == self.leftButton {
-            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
-            self.leftButton = UIButton.init(frame: CGRectMake(0, statusBarHeight, buttonWidth, self.bounds.height - statusBarHeight))
-            self.leftButton?.backgroundColor = UIColor.clearColor()
-            self.leftButton?.addTarget(self, action: #selector(leftButtonClicked(_:)), forControlEvents: .TouchUpInside)
+            let statusBarHeight = UIApplication.shared.statusBarFrame.height
+            
+            self.leftButton = UIButton.init(frame: CGRect.init(x: 0, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
+            self.leftButton?.backgroundColor = UIColor.clear
+            self.leftButton?.addTarget(self, action: #selector(leftButtonClicked(button:)), for: .touchUpInside)
             self.addSubview(self.leftButton!)
         }
         
-        self.leftButton?.setImage(image, forState: .Normal)
+        self.leftButton?.setImage(image, for: .normal)
         self.updateScrollViewFrame()
     }
     
@@ -298,14 +307,15 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     func showRightBarButton(withImage image: UIImage) {
         self.showRightButton = true
         if nil == self.rightButton {
-            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
-            self.rightButton = UIButton.init(frame: CGRectMake(self.bounds.width - buttonWidth, statusBarHeight, buttonWidth, self.bounds.height - statusBarHeight))
-            self.rightButton?.backgroundColor = UIColor.clearColor()
-            self.rightButton?.addTarget(self, action: #selector(rightButtonClicked(_:)), forControlEvents: .TouchUpInside)
+            let statusBarHeight = UIApplication.shared.statusBarFrame.height
+            
+            self.rightButton = UIButton.init(frame: CGRect.init(x: self.bounds.width - buttonWidth, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
+            self.rightButton?.backgroundColor = UIColor.clear
+            self.rightButton?.addTarget(self, action: #selector(rightButtonClicked(button:)), for: .touchUpInside)
             self.addSubview(self.rightButton!)
         }
         
-        self.rightButton?.setImage(image, forState: .Normal)
+        self.rightButton?.setImage(image, for: .normal)
         self.updateScrollViewFrame()
     }
     
@@ -324,9 +334,9 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
         if nil == self.scrollView {
             
-            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+            let statusBarHeight = UIApplication.shared.statusBarFrame.height
             
-            self.scrollView = UIScrollView.init(frame: CGRectMake(0, statusBarHeight, self.bounds.width, self.bounds.height - statusBarHeight))
+            self.scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: statusBarHeight, width: self.bounds.width, height: self.bounds.height - statusBarHeight))
             self.scrollView?.showsVerticalScrollIndicator = false
             self.scrollView?.showsHorizontalScrollIndicator = false
             
@@ -366,11 +376,12 @@ class NavTabBar: UIView, UIScrollViewDelegate {
                     width = itemWidth
                 }
                 
-                item.frame = CGRectMake(x, 0, width, self.scrollView!.bounds.height)
-                item.setTitleColor(self.itemTitleColor)
-                item.setTitleSelectedColor(self.itemTitleSelectedColor)
-                item.setTitleFont(self.itemTitleFont)
-                item.addTarget(self, action: #selector(tabItemClicked(_:)), forControlEvents: .TouchUpInside)
+                
+                item.frame = CGRect.init(x: x, y: 0, width: width, height: self.scrollView!.bounds.height)
+                item.setTitleColor(titleColor: self.itemTitleColor)
+                item.setTitleSelectedColor(titleSelectedColor: self.itemTitleSelectedColor)
+                item.setTitleFont(titleFont: self.itemTitleFont)
+                item.addTarget(self, action: #selector(tabItemClicked(item:)), for: .touchUpInside)
                 item.index = index
                 
                 x = x + width
@@ -378,7 +389,8 @@ class NavTabBar: UIView, UIScrollViewDelegate {
                 self.scrollView?.addSubview(item)
             }
             
-            self.scrollView?.contentSize = CGSizeMake(MAX(x + self.leftAndRightSpacing, value2: self.scrollView!.frame.size.width), self.scrollView!.frame.size.height)
+            
+            self.scrollView?.contentSize = CGSize.init(width: MAX(value1: x + self.leftAndRightSpacing, value2: self.scrollView!.frame.size.width), height: self.scrollView!.frame.size.height)
         }
     }
     
@@ -401,7 +413,8 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             width = width - self.buttonWidth
         }
         
-        self.scrollView?.frame = CGRectMake(x, y, width, height)
+        
+        self.scrollView?.frame = CGRect.init(x: x, y: y, width: width, height: height)
         
         self.updateItemsFrame()
     }
@@ -418,10 +431,8 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         let item = self.items[index]
         let width = item.frame.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right
         let height = item.frame.size.height - self.itemSelectedBgInsets.top - self.itemSelectedBgInsets.bottom
-        self.itemSelectedBgImageView!.frame = CGRectMake(item.frame.origin.x + self.itemSelectedBgInsets.left,
-                                                         item.frame.origin.y + self.itemSelectedBgInsets.top,
-                                                         width,
-                                                         height)
+        
+        self.itemSelectedBgImageView!.frame = CGRect.init(x: item.frame.origin.x + self.itemSelectedBgInsets.left, y: item.frame.origin.y + self.itemSelectedBgInsets.top, width: width, height: height)
     }
     
     /**
@@ -430,12 +441,12 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     private func updateItemsScaleIfNeeded() {
         if self.itemFontChangeFollowContentScroll {
             self.items.forEach{
-                $0.setTitleFont(self.itemTitleSelectedFont)
-                if !$0.selected {
+                $0.setTitleFont(titleFont: self.itemTitleSelectedFont)
+                if !$0.isSelected {
                     
                     let itemTitleUnselectedFontScale = self.itemTitleFont.pointSize / self.itemTitleSelectedFont.pointSize
                     
-                    $0.transform = CGAffineTransformMakeScale(itemTitleUnselectedFontScale, itemTitleUnselectedFontScale)
+                    $0.transform = CGAffineTransform(scaleX: itemTitleUnselectedFontScale, y: itemTitleUnselectedFontScale)
                 }
             }
             
@@ -480,7 +491,8 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         if offsetX > maxOffsetX {
             offsetX = maxOffsetX
         }
-        self.scrollView?.setContentOffset(CGPointMake(offsetX, 0), animated: true)
+        
+        self.scrollView?.setContentOffset(CGPoint.init(x: offsetX, y: 0), animated: true)
     }
     
     /*
@@ -500,18 +512,17 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     
     //MARK: - UIScrollViewDelegate
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         // 这里的Delegate是给NavTabController调用的
         if scrollView.isEqual(self.scrollView) {
             return
         }
         
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.size.width)
-        setSelectedItemIndex(page)
+        setSelectedItemIndex(selectedItemIndex: page)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         // 这里的Delegate是给NavTabController调用的
         if scrollView.isEqual(self.scrollView) {
@@ -519,7 +530,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         }
         
         // 如果不是手势拖动导致的此方法被调用，不处理
-        if !(scrollView.dragging || scrollView.decelerating) {
+        if !(scrollView.isDragging || scrollView.isDecelerating) {
             return
         }
         
@@ -553,8 +564,8 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             // 计算字体大小的差值
             let diff = itemTitleUnselectedFontScale - 1
             // 根据偏移量和差值，计算缩放值
-            leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1)
-            rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1)
+            leftItem.transform = CGAffineTransform(scaleX: rightScale * diff + 1, y: rightScale * diff + 1)
+            rightItem.transform = CGAffineTransform(scaleX: leftScale * diff + 1, y: leftScale * diff + 1)
         }
         
         // 计算颜色的渐变

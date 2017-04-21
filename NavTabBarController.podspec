@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   A news client NavTabBarController.一个新闻客户端的NavTabBarController.
                    DESC
   s.homepage     = "https://github.com/Jvaeyhcd/NavTabBarController"
-  s.screenshots  = "https://raw.githubusercontent.com/Jvaeyhcd/NavTabBarController/master/1.gif"
+  # s.screenshots  = "https://raw.githubusercontent.com/Jvaeyhcd/NavTabBarController/master/1.gif"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Jvaeyhcd" => "chedahuang@icloud.com" }
   s.platform     = :ios, "8.0"
