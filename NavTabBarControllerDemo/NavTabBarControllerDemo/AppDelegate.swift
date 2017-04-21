@@ -8,6 +8,9 @@
 
 import UIKit
 
+let kScreenWidth = UIScreen.main.bounds.size.width
+let kScreenHeight = UIScreen.main.bounds.size.height
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -18,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.backgroundColor = UIColor.lightGray
-        window!.rootViewController = ViewController()
+        window!.rootViewController = SlippedDemoViewController()
         window!.makeKeyAndVisible()
         
         return true

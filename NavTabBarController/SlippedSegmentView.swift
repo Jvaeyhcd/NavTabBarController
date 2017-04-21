@@ -5,16 +5,13 @@
 //  Created by polesapp-hcd on 2016/11/2.
 //  Copyright © 2016年 Polesapp. All rights reserved.
 //
-
 import UIKit
-
 protocol HcdTabBarDelegate {
-    func tabBar(tabBar: NavTabBar, willSelectItemAtIndex: Int) -> Bool
-    func tabBar(tabBar: NavTabBar, didSelectedItemAtIndex: Int)
+    func tabBar(tabBar: SlippedSegmentView, willSelectItemAtIndex: Int) -> Bool
+    func tabBar(tabBar: SlippedSegmentView, didSelectedItemAtIndex: Int)
     func leftButtonClicked()
     func rightButtonClicked()
 }
-
 extension HcdTabBarDelegate {
     
     // 定义可选协议
@@ -26,21 +23,31 @@ extension HcdTabBarDelegate {
         
     }
 }
-
-class NavTabBar: UIView, UIScrollViewDelegate {
+class SlippedSegmentView: UIView, UIScrollViewDelegate {
     
     var delegate: HcdTabBarDelegate?
     
     var leftAndRightSpacing = CGFloat(0)
+    // 选中Item背景的Insets
     private var itemSelectedBgInsets = UIEdgeInsetsMake(40, 15, 0, 15)
+    
+    // 水平内边距
+    private var itemHorizontalPadding = CGFloat(15)
     
     // Item的宽度，默认值70
     private var itemWidth = CGFloat(70)
+    // 是否根据Item文字自适应Item的宽度,默认false
+    private var autoResizeItemWidth = false
+    
+    // item的文字数组
+    private var titles: [String]!
     // 选中的Item的index
     private var selectedItemIndex = -1
     private var scrollView: UIScrollView?
-    private var items: [NavTabBarItem] = [NavTabBarItem]()
+    
+    private var items: [SlippedSegmentItem] = [SlippedSegmentItem]()
     private var itemSelectedBgImageView: UIImageView?
+    private var itemSelectedBgImageViewColor: UIColor = UIColor.red
     // item的选中字体大小，默认20
     private var itemTitleSelectedFont = UIFont.systemFont(ofSize: 20)
     // item的没有选中字体大小，默认16
@@ -130,8 +137,15 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         updateItemsScaleIfNeeded()
     }
     
-    func setItemSelectedBgInsets(itemSelectedBgInsets: UIEdgeInsets) {
-        self.itemSelectedBgInsets = itemSelectedBgInsets
+    func setItemHorizontalPadding(itemHorizontalPadding: CGFloat) {
+        self.itemHorizontalPadding = itemHorizontalPadding
+        updateItemsFrame()
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
+    func setAutoResizeItemWidth(auto: Bool) {
+        self.autoResizeItemWidth = auto
         updateItemsFrame()
         setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
         updateItemsScaleIfNeeded()
@@ -145,6 +159,13 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         updateScrollViewFrame()
     }
     
+    func setItemSelectedBgImageViewColor(itemSelectedBgImageViewColor: UIColor) {
+        self.itemSelectedBgImageViewColor = itemSelectedBgImageViewColor
+        updateItemsFrame()
+        setSelectedItemIndex(selectedItemIndex: self.selectedItemIndex)
+        updateItemsScaleIfNeeded()
+    }
+    
     /**
      设置选中Item下标
      
@@ -154,8 +175,12 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         if self.items.count == 0 || selectedItemIndex < 0 || selectedItemIndex >= self.items.count {
             return
         }
+        //
+        //        if self.selectedItemIndex >= self.items.count || self.selectedItemIndex < 0 {
+        //            return
+        //        }
         
-        if self.selectedItemIndex >= 0 {
+        if self.selectedItemIndex >= 0 && self.selectedItemIndex < self.items.count {
             let oldSelectedItem = self.items[self.selectedItemIndex]
             oldSelectedItem.isSelected = false
             if self.itemFontChangeFollowContentScroll {
@@ -188,7 +213,6 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
         // didSelectedItemAtIndex
         if nil != self.delegate {
-            self.delegate?.tabBar(tabBar: self, willSelectItemAtIndex: selectedItemIndex)
             self.delegate?.tabBar(tabBar: self, didSelectedItemAtIndex: selectedItemIndex)
         }
         
@@ -201,7 +225,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
      
      - parameter items: Items数组
      */
-    func setItems(items: [NavTabBarItem]) {
+    func setItems(items: [SlippedSegmentItem]) {
         self.items.forEach{ $0.removeFromSuperview() }
         
         self.items = items
@@ -212,12 +236,17 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
     }
     
+    func setItemSelectedBgInsets(itemSelectedBgInsets: UIEdgeInsets) {
+        self.itemSelectedBgInsets = itemSelectedBgInsets
+        updateSelectedBgFrameWithIndex(index: self.selectedItemIndex)
+    }
+    
     /**
      Item点击事件
      
      - parameter item: 被点击的Item
      */
-    @objc private func tabItemClicked(item: NavTabBarItem) {
+    @objc private func tabItemClicked(item: SlippedSegmentItem) {
         if self.selectedItemIndex == item.index {
             return
         }
@@ -269,9 +298,10 @@ class NavTabBar: UIView, UIScrollViewDelegate {
      - parameter titles: title数组
      */
     func setTitles(titles: [String]) {
-        var items = [NavTabBarItem]()
+        self.titles = titles
+        var items = [SlippedSegmentItem]()
         for title in titles {
-            let item = NavTabBarItem()
+            let item = SlippedSegmentItem()
             item.setTitle(title, for: .normal)
             items.append(item)
         }
@@ -288,8 +318,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.showLeftButton = true
         if nil == self.leftButton {
             let statusBarHeight = UIApplication.shared.statusBarFrame.height
-            
-            self.leftButton = UIButton.init(frame: CGRect.init(x: 0, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
+            self.leftButton = UIButton.init(frame: CGRect(x: 0, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
             self.leftButton?.backgroundColor = UIColor.clear
             self.leftButton?.addTarget(self, action: #selector(leftButtonClicked(button:)), for: .touchUpInside)
             self.addSubview(self.leftButton!)
@@ -308,8 +337,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.showRightButton = true
         if nil == self.rightButton {
             let statusBarHeight = UIApplication.shared.statusBarFrame.height
-            
-            self.rightButton = UIButton.init(frame: CGRect.init(x: self.bounds.width - buttonWidth, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
+            self.rightButton = UIButton.init(frame: CGRect(x: self.bounds.width - buttonWidth, y: statusBarHeight, width: buttonWidth, height: self.bounds.height - statusBarHeight))
             self.rightButton?.backgroundColor = UIColor.clear
             self.rightButton?.addTarget(self, action: #selector(rightButtonClicked(button:)), for: .touchUpInside)
             self.addSubview(self.rightButton!)
@@ -336,7 +364,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             
             let statusBarHeight = UIApplication.shared.statusBarFrame.height
             
-            self.scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: statusBarHeight, width: self.bounds.width, height: self.bounds.height - statusBarHeight))
+            self.scrollView = UIScrollView.init(frame: CGRect(x: 0, y: statusBarHeight, width: self.bounds.width, height: self.bounds.height - statusBarHeight))
             self.scrollView?.showsVerticalScrollIndicator = false
             self.scrollView?.showsHorizontalScrollIndicator = false
             
@@ -345,12 +373,12 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         
         if nil == self.itemSelectedBgImageView {
             self.itemSelectedBgImageView = UIImageView.init(frame: .zero)
-            self.itemSelectedBgImageView?.backgroundColor = UIColor.init(red: 0.000, green: 0.655, blue: 0.937, alpha: 1.00)
+            self.itemSelectedBgImageView?.backgroundColor = itemSelectedBgImageViewColor
         }
     }
     
     private func initDatas() {
-        
+        self.titles = [String]()
     }
     
     /**
@@ -366,18 +394,27 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         self.itemSelectedBgImageView!.removeFromSuperview()
         
         if nil != self.scrollView {
+            self.itemSelectedBgImageView?.backgroundColor = itemSelectedBgImageViewColor
             self.scrollView?.addSubview(self.itemSelectedBgImageView!)
             var x = self.leftAndRightSpacing
             var index = 0
             for item in self.items {
                 
                 var width = CGFloat(0)
-                if itemWidth > 0 {
+                if autoResizeItemWidth {
+                    
+                    let title = titles[index] as NSString
+                    
+                    let size = title.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 20), options: .usesFontLeading, attributes: [NSFontAttributeName: self.itemTitleFont], context: nil)
+                    
+                    
+                    width = size.width + itemHorizontalPadding + itemHorizontalPadding
+                    
+                } else if itemWidth > 0 {
                     width = itemWidth
                 }
                 
-                
-                item.frame = CGRect.init(x: x, y: 0, width: width, height: self.scrollView!.bounds.height)
+                item.frame = CGRect(x: x, y: 0, width: width, height: self.scrollView!.bounds.height)
                 item.setTitleColor(titleColor: self.itemTitleColor)
                 item.setTitleSelectedColor(titleSelectedColor: self.itemTitleSelectedColor)
                 item.setTitleFont(titleFont: self.itemTitleFont)
@@ -389,8 +426,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
                 self.scrollView?.addSubview(item)
             }
             
-            
-            self.scrollView?.contentSize = CGSize.init(width: MAX(value1: x + self.leftAndRightSpacing, value2: self.scrollView!.frame.size.width), height: self.scrollView!.frame.size.height)
+            self.scrollView?.contentSize = CGSize(width: MAX(value1: x + self.leftAndRightSpacing, value2: self.scrollView!.frame.size.width), height: self.scrollView!.frame.size.height)
         }
     }
     
@@ -413,8 +449,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
             width = width - self.buttonWidth
         }
         
-        
-        self.scrollView?.frame = CGRect.init(x: x, y: y, width: width, height: height)
+        self.scrollView?.frame = CGRect(x: x, y: y, width: width, height: height)
         
         self.updateItemsFrame()
     }
@@ -431,8 +466,10 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         let item = self.items[index]
         let width = item.frame.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right
         let height = item.frame.size.height - self.itemSelectedBgInsets.top - self.itemSelectedBgInsets.bottom
-        
-        self.itemSelectedBgImageView!.frame = CGRect.init(x: item.frame.origin.x + self.itemSelectedBgInsets.left, y: item.frame.origin.y + self.itemSelectedBgInsets.top, width: width, height: height)
+        self.itemSelectedBgImageView!.frame = CGRect(x: item.frame.origin.x + self.itemSelectedBgInsets.left,
+                                                     y: item.frame.origin.y + self.itemSelectedBgInsets.top,
+                                                     width: width,
+                                                     height: height)
     }
     
     /**
@@ -458,7 +495,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
      
      - returns: 选中的Item
      */
-    private func selectedItem() -> NavTabBarItem? {
+    private func selectedItem() -> SlippedSegmentItem? {
         
         if self.selectedItemIndex >= 0 && self.selectedItemIndex < self.items.count {
             return self.items[self.selectedItemIndex]
@@ -491,8 +528,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
         if offsetX > maxOffsetX {
             offsetX = maxOffsetX
         }
-        
-        self.scrollView?.setContentOffset(CGPoint.init(x: offsetX, y: 0), animated: true)
+        self.scrollView?.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
     
     /*
@@ -513,6 +549,7 @@ class NavTabBar: UIView, UIScrollViewDelegate {
     //MARK: - UIScrollViewDelegate
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
         // 这里的Delegate是给NavTabController调用的
         if scrollView.isEqual(self.scrollView) {
             return

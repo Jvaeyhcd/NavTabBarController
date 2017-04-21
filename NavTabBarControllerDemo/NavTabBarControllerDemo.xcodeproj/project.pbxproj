@@ -10,9 +10,13 @@
 		0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF46581DC72175001E4627 /* AppDelegate.swift */; };
 		0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDF465A1DC72175001E4627 /* ViewController.swift */; };
 		0CDF46601DC72175001E4627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CDF465F1DC72175001E4627 /* Assets.xcassets */; };
-		0CEA15771DC9FED60028B23E /* NavTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15741DC9FED60028B23E /* NavTabBar.swift */; };
+		0CEA15771DC9FED60028B23E /* SlippedSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15741DC9FED60028B23E /* SlippedSegmentView.swift */; };
 		0CEA15781DC9FED60028B23E /* NavTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15751DC9FED60028B23E /* NavTabBarController.swift */; };
-		0CEA15791DC9FED60028B23E /* NavTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */; };
+		0CEA15791DC9FED60028B23E /* SlippedSegmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA15761DC9FED60028B23E /* SlippedSegmentItem.swift */; };
+		BEF782901EA9F5CE008F88A6 /* SlippedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF7828F1EA9F5CE008F88A6 /* SlippedViewController.swift */; };
+		BEF782921EA9F6B4008F88A6 /* SlippedDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF782911EA9F6B4008F88A6 /* SlippedDemoViewController.swift */; };
+		BEF782941EA9FC5D008F88A6 /* SlippedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF782931EA9FC5D008F88A6 /* SlippedTableViewController.swift */; };
+		BEF782981EAA0114008F88A6 /* SlippedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF782971EAA0114008F88A6 /* SlippedTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,9 +25,13 @@
 		0CDF465A1DC72175001E4627 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0CDF465F1DC72175001E4627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CDF46641DC72175001E4627 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0CEA15741DC9FED60028B23E /* NavTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBar.swift; sourceTree = "<group>"; };
+		0CEA15741DC9FED60028B23E /* SlippedSegmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedSegmentView.swift; sourceTree = "<group>"; };
 		0CEA15751DC9FED60028B23E /* NavTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBarController.swift; sourceTree = "<group>"; };
-		0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavTabBarItem.swift; sourceTree = "<group>"; };
+		0CEA15761DC9FED60028B23E /* SlippedSegmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedSegmentItem.swift; sourceTree = "<group>"; };
+		BEF7828F1EA9F5CE008F88A6 /* SlippedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedViewController.swift; sourceTree = "<group>"; };
+		BEF782911EA9F6B4008F88A6 /* SlippedDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedDemoViewController.swift; sourceTree = "<group>"; };
+		BEF782931EA9FC5D008F88A6 /* SlippedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedTableViewController.swift; sourceTree = "<group>"; };
+		BEF782971EAA0114008F88A6 /* SlippedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlippedTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,9 @@
 			children = (
 				0CDF466A1DC72192001E4627 /* NavTabBarController */,
 				0CDF46581DC72175001E4627 /* AppDelegate.swift */,
+				BEF782911EA9F6B4008F88A6 /* SlippedDemoViewController.swift */,
+				BEF782931EA9FC5D008F88A6 /* SlippedTableViewController.swift */,
+				BEF782971EAA0114008F88A6 /* SlippedTableViewCell.swift */,
 				0CDF465A1DC72175001E4627 /* ViewController.swift */,
 				0CDF465F1DC72175001E4627 /* Assets.xcassets */,
 				0CDF46641DC72175001E4627 /* Info.plist */,
@@ -68,9 +79,10 @@
 		0CDF466A1DC72192001E4627 /* NavTabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				0CEA15741DC9FED60028B23E /* NavTabBar.swift */,
 				0CEA15751DC9FED60028B23E /* NavTabBarController.swift */,
-				0CEA15761DC9FED60028B23E /* NavTabBarItem.swift */,
+				0CEA15741DC9FED60028B23E /* SlippedSegmentView.swift */,
+				0CEA15761DC9FED60028B23E /* SlippedSegmentItem.swift */,
+				BEF7828F1EA9F5CE008F88A6 /* SlippedViewController.swift */,
 			);
 			name = NavTabBarController;
 			path = ../../NavTabBarController;
@@ -148,10 +160,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CEA15791DC9FED60028B23E /* NavTabBarItem.swift in Sources */,
-				0CEA15771DC9FED60028B23E /* NavTabBar.swift in Sources */,
+				BEF782981EAA0114008F88A6 /* SlippedTableViewCell.swift in Sources */,
+				BEF782901EA9F5CE008F88A6 /* SlippedViewController.swift in Sources */,
+				0CEA15791DC9FED60028B23E /* SlippedSegmentItem.swift in Sources */,
+				0CEA15771DC9FED60028B23E /* SlippedSegmentView.swift in Sources */,
 				0CEA15781DC9FED60028B23E /* NavTabBarController.swift in Sources */,
+				BEF782921EA9F6B4008F88A6 /* SlippedDemoViewController.swift in Sources */,
 				0CDF465B1DC72175001E4627 /* ViewController.swift in Sources */,
+				BEF782941EA9FC5D008F88A6 /* SlippedTableViewController.swift in Sources */,
 				0CDF46591DC72175001E4627 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

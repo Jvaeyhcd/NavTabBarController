@@ -1,5 +1,5 @@
 //
-//  NavTabBarItem.swift
+//  SlippedSegmentItem.swift
 //  govlan
 //
 //  Created by polesapp-hcd on 2016/11/2.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NavTabBarItem: UIButton {
+class SlippedSegmentItem: UIButton {
     
     var index: Int = 0
     

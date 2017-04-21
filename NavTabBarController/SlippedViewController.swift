@@ -1,24 +1,26 @@
 //
-//  NavTabBarController.swift
-//  govlan
+//  SlippedViewController.swift
+//  NavTabBarControllerDemo
 //
-//  Created by polesapp-hcd on 2016/11/2.
-//  Copyright © 2016年 Polesapp. All rights reserved.
+//  Created by Jvaeyhcd on 21/04/2017.
+//  Copyright © 2017 Jvaeyhcd. All rights reserved.
 //
 
 import UIKit
 
-class NavTabBarController: UIViewController, HcdTabBarDelegate {
+class SlippedViewController: UIViewController, HcdTabBarDelegate {
     
     var tabBar: SlippedSegmentView?
     var canotScrollIndex = -1
     
-    private var selectedControllerIndex = -1
-    private var viewControllers = [UIViewController]()
+    fileprivate var selectedControllerIndex = -1
+    fileprivate var viewControllers = [SlippedTableViewController]()
     
-    var scrollView: UIScrollView?
-    private var contentViewFrame: CGRect?
-    private var contentSwitchAnimated = true
+    var controllersScrollView: UIScrollView?
+    fileprivate var contentViewFrame: CGRect?
+    fileprivate var contentSwitchAnimated = true
+    
+    var headView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +45,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         
         if nil == self.tabBar {
             
-            self.tabBar = SlippedSegmentView.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 64))
+            self.tabBar = SlippedSegmentView.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
             self.tabBar?.backgroundColor = UIColor.white
             self.tabBar?.showSelectedBgView(show: false)
             self.tabBar?.delegate = self
@@ -53,26 +55,32 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         
         setupFrameOfTabBarAndContentView()
         
-        if nil == self.scrollView {
-            self.scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-            self.scrollView?.isPagingEnabled = true
-            self.scrollView!.showsHorizontalScrollIndicator = false
-            self.scrollView!.alwaysBounceVertical = true
-            self.scrollView!.alwaysBounceHorizontal = true
-            self.scrollView!.bounces = false
-            self.scrollView!.showsVerticalScrollIndicator = false
-            self.scrollView!.scrollsToTop = false
-            self.scrollView!.delegate = self.tabBar
-            self.view.insertSubview(self.scrollView!, belowSubview: self.tabBar!)
+        if nil == self.controllersScrollView {
+            self.controllersScrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+            self.controllersScrollView?.isPagingEnabled = true
+            self.controllersScrollView!.showsHorizontalScrollIndicator = false
+            self.controllersScrollView!.alwaysBounceVertical = true
+            self.controllersScrollView!.alwaysBounceHorizontal = true
+            self.controllersScrollView!.bounces = false
+            self.controllersScrollView!.showsVerticalScrollIndicator = false
+            self.controllersScrollView!.scrollsToTop = false
+            self.controllersScrollView!.delegate = self.tabBar
+            self.view.insertSubview(self.controllersScrollView!, belowSubview: self.tabBar!)
+        }
+        
+        if nil == self.headView {
+            self.headView = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: 200))
+            self.headView?.backgroundColor = UIColor.green
+            self.view.addSubview(self.headView!)
         }
         
     }
     
     private func updateContentViewsFrame() {
-        if nil !=  self.scrollView {
-            self.scrollView?.frame = self.contentViewFrame!
+        if nil !=  self.controllersScrollView {
+            self.controllersScrollView?.frame = self.contentViewFrame!
             
-            self.scrollView?.contentSize = CGSize.init(width: self.contentViewFrame!.size.width * CGFloat(self.viewControllers.count), height: self.contentViewFrame!.size.height)
+            self.controllersScrollView?.contentSize = CGSize.init(width: self.contentViewFrame!.size.width * CGFloat(self.viewControllers.count), height: self.contentViewFrame!.size.height)
             
             var index = 0
             
@@ -87,7 +95,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
             }
             
             if nil != selectedController() {
-                self.scrollView?.scrollRectToVisible(selectedController()!.view.frame, animated: false)
+                self.controllersScrollView?.scrollRectToVisible(selectedController()!.view.frame, animated: false)
             }
         }
     }
@@ -103,7 +111,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         // 设置默认的tabBar的frame和contentViewFrame
         let screenSize = UIScreen.main.bounds.size
         
-        let tabBarHeight = CGFloat(64)
+        let tabBarHeight = CGFloat(50)
         
         let contentViewY = tabBarHeight
         let tabBarY = CGFloat(0)
@@ -137,19 +145,19 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         }
         let curController = self.viewControllers[selectedControllerIndex]
         var isAppearFirstTime = true
-        if nil != self.scrollView {
+        if nil != self.controllersScrollView {
             oldController?.viewWillDisappear(false)
             if nil == curController.view.superview {
                 // superview为空，表示为第一次加载，设置frame，并添加到scrollView
-                curController.view.frame = CGRect.init(x: CGFloat(selectedControllerIndex) * self.scrollView!.frame.size.width, y: 0, width: self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height)
-                self.scrollView?.addSubview(curController.view)
+                curController.view.frame = CGRect.init(x: CGFloat(selectedControllerIndex) * self.controllersScrollView!.frame.size.width, y: 0, width: self.controllersScrollView!.frame.size.width, height: self.controllersScrollView!.frame.size.height)
+                self.controllersScrollView?.addSubview(curController.view)
             } else {
                 // superview不为空，表示为已经加载过了，调用viewWillAppear方法
                 isAppearFirstTime = false
                 curController.viewWillAppear(false)
             }
             // 切换到curController
-            self.scrollView?.scrollRectToVisible(curController.view.frame, animated: self.contentSwitchAnimated)
+            self.controllersScrollView?.scrollRectToVisible(curController.view.frame, animated: self.contentSwitchAnimated)
         }
         // 当contentView为scrollView及其子类时，设置它支持点击状态栏回到顶部
         if nil != oldController && (oldController?.view.isKind(of: UIScrollView.self))! {
@@ -163,7 +171,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         
         // 调用状态切换的回调方法
         
-        if nil != self.scrollView {
+        if nil != self.controllersScrollView {
             oldController?.viewDidDisappear(false)
             if !isAppearFirstTime {
                 curController.viewDidAppear(false)
@@ -176,7 +184,7 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
      
      - parameter viewControllers: ViewController数组
      */
-    func setViewControllers(viewControllers: [UIViewController]) {
+    func setViewControllers(viewControllers: [SlippedTableViewController]) {
         
         if viewControllers.count == 0 {
             return
@@ -193,7 +201,8 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         self.viewControllers = viewControllers
         self.viewControllers.forEach { controller in
             self.addChildViewController(controller)
-            
+            controller.tableView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight - 64 - 50)
+            controller.tableView.addObserver(self, forKeyPath: "contentOffset", options: NSKeyValueObservingOptions.new, context: nil)
             var title = controller.title
             if nil == title || "" == title {
                 title = "Item" + String(index + 1)
@@ -207,8 +216,8 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
         self.tabBar?.setSelectedItemIndex(selectedItemIndex: 0)
         
         // 更新scrollView的content size
-        if nil != self.scrollView {
-            self.scrollView?.contentSize = CGSize.init(width: self.contentViewFrame!.size.width, height: self.contentViewFrame!.size.height)
+        if nil != self.controllersScrollView {
+            self.controllersScrollView?.contentSize = CGSize.init(width: self.contentViewFrame!.size.width, height: self.contentViewFrame!.size.height)
         }
         updateContentViewsFrame()
     }
@@ -243,9 +252,9 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
             return
         }
         if didSelectedItemAtIndex == self.canotScrollIndex {
-            self.scrollView?.isScrollEnabled = false
+            self.controllersScrollView?.isScrollEnabled = false
         } else {
-            self.scrollView?.isScrollEnabled = true
+            self.controllersScrollView?.isScrollEnabled = true
         }
         
         self.setSelectedControllerIndex(selectedControllerIndex: didSelectedItemAtIndex)
@@ -262,4 +271,44 @@ class NavTabBarController: UIViewController, HcdTabBarDelegate {
     func rightButtonClicked() {
         
     }
+}
+
+//======================================================================
+// MARK:- kvo 和 通知
+//======================================================================
+
+extension SlippedViewController {
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
+        let tableView = object as! UITableView
+        
+        if keyPath != "contentOffset" {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        
+        let tableViewoffsetY = tableView.contentOffset.y
+        
+        if ( tableViewoffsetY>=0 && tableViewoffsetY<=136) {
+            
+            self.tabBar?.frame = CGRect(x: 0, y: 200-tableViewoffsetY, width: kScreenWidth, height: 50)
+            self.headView?.frame = CGRect(x: 0, y: 0-tableViewoffsetY, width: kScreenWidth, height: 200)
+            self.controllersScrollView?.frame = CGRect(x: 0, y: 250-tableViewoffsetY, width: kScreenWidth, height: kScreenHeight - 64 - 50)
+            
+        } else if( tableViewoffsetY < 0){
+            
+            self.tabBar?.frame = CGRect(x: 0, y: 200, width: kScreenWidth, height: 50)
+            self.headView?.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: 200)
+            self.controllersScrollView?.frame = CGRect(x: 0, y: 250, width: kScreenWidth, height: kScreenHeight - 64 - 50)
+            
+        } else if (tableViewoffsetY > 136){
+            
+            self.tabBar?.frame = CGRect(x: 0, y: 64, width: kScreenWidth, height: 50)
+            self.headView?.frame = CGRect(x: 0, y: -136, width: kScreenWidth, height: 200)
+            self.controllersScrollView?.frame = CGRect(x: 0, y: 64 + 50, width: kScreenWidth, height: kScreenHeight - 64 - 50)
+            
+        }
+    }
+    
 }

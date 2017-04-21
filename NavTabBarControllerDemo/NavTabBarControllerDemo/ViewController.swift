@@ -15,8 +15,8 @@ class ViewController: NavTabBarController {
         // Do any additional setup after loading the view, typically from a nib.
         
         
-        self.tabBar?.showLeftBarButton(withImage: UIImage(named: "nav_menu_btn")!)
-        self.tabBar?.showRightBarButton(withImage: UIImage(named: "nav_menu_list")!)
+//        self.tabBar?.showLeftBarButton(withImage: UIImage(named: "nav_menu_btn")!)
+//        self.tabBar?.showRightBarButton(withImage: UIImage(named: "nav_menu_list")!)
         
         let vc1 = UIViewController()
         vc1.title = "精选"
@@ -34,11 +34,13 @@ class ViewController: NavTabBarController {
         vc5.title = "娱乐"
         
         let vc6 = UIViewController()
-        vc6.title = "军事"
+        vc6.title = "成都七中"
         
         setTabBarFrame(tabBarFrame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 64), contentViewFrame: CGRect(x: 0, y: 64, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 64))
-        self.tabBar?.setItemWidth(itemWidth: UIScreen.main.bounds.width / 5)
+//        self.tabBar?.setItemWidth(itemWidth: UIScreen.main.bounds.width / 5)
+        self.tabBar?.setAutoResizeItemWidth(auto: true)
         self.tabBar?.setFramePadding(top: 20, left: 0, bottom: 0, right: 0)
+        self.tabBar?.showSelectedBgView(show: true)
         
         setViewControllers(viewControllers: [vc1, vc2, vc3, vc4, vc5, vc6])
     }
